@@ -126,7 +126,9 @@ public class RestApiCallController {
     // * GetAccountLookup --
     // localhost:8084/GetAccountLookup?accountNumber
     @GetMapping(value = "/GetAccountLookup")
-    public String GetAccountLookup(@RequestParam("") String accountNumber) {
+    public String GetAccountLookup(@RequestParam(name = "accountNumber", required = false) String accountNumber) {
+        // public String GetAccountLookup(@RequestParam("") String accountNumber) {
+
         String uri = "https://api.dingconnect.com/api/V1/GetAccountLookup";
         String param = "";
         param = getSingleParamAddedInURI(param, "accountNumber=", accountNumber);
@@ -172,7 +174,8 @@ public class RestApiCallController {
     // * GetProductDescriptions - Tested Partially
     // localhost:8084/GetProductDescriptions?languageCodes&languageCodes&skuCodes&skuCodes
     @GetMapping(value = "/GetProductDescriptions")
-    public String GetProductDescriptions(@RequestParam String[] languageCodes, @RequestParam String[] skuCodes) {
+    public String GetProductDescriptions(@RequestParam(name = "languageCodes", required = false) String[] languageCodes,
+            @RequestParam(name = "skuCodes", required = false) String[] skuCodes) {
         String uri = "https://api.dingconnect.com/api/V1/GetProductDescriptions";
         String param = "";
         param = getParamFromArray(param, "languageCodes=", languageCodes);
@@ -183,9 +186,12 @@ public class RestApiCallController {
     // * GetProducts
     // localhost:8084/GetProducts?countryIsos&countryIsos&providerCodes&providerCodes&skuCodes&skuCodes&benefits&benefits&regionCodes&regionCodes&accountNumber
     @GetMapping(value = "/GetProducts")
-    public String GetProducts(@RequestParam String[] countryIsos, @RequestParam String[] providerCodes,
-            @RequestParam String[] skuCodes, @RequestParam String[] benefits, @RequestParam String[] regionCodes,
-            @RequestParam("") String accountNumber) {
+    public String GetProducts(@RequestParam(name = "countryIsos", required = false) String[] countryIsos,
+            @RequestParam(name = "providerCodes", required = false) String[] providerCodes,
+            @RequestParam(name = "skuCodes", required = false) String[] skuCodes,
+            @RequestParam(name = "benefits", required = false) String[] benefits,
+            @RequestParam(name = "regionCodes", required = false) String[] regionCodes,
+            @RequestParam(name = "accountNumber", required = false) String accountNumber) {
         String uri = "https://api.dingconnect.com/api/V1/GetProducts";
         String param = "";
         param = getParamFromArray(param, "countryIsos=", countryIsos);
@@ -200,7 +206,8 @@ public class RestApiCallController {
     // * GetPromotionDescriptions
     // localhost:8084/GetPromotionDescriptions?languageCodes&languageCodes
     @GetMapping(value = "/GetPromotionDescriptions")
-    public String GetPromotionDescriptions(@RequestParam String[] languageCodes) {
+    public String GetPromotionDescriptions(
+            @RequestParam(name = "languageCodes", required = false) String[] languageCodes) {
         String uri = "https://api.dingconnect.com/api/V1/GetPromotionDescriptions";
         String param = "";
         param = getParamFromArray(param, "languageCodes=", languageCodes);
@@ -210,8 +217,9 @@ public class RestApiCallController {
     // * GetPromotions
     // localhost:8084/GetPromotions?countryIsos&countryIsos&providerCodes&providerCodes&accountNumber
     @GetMapping(value = "/GetPromotions")
-    public String GetPromotions(@RequestParam String[] countryIsos, @RequestParam String[] providerCodes,
-            @RequestParam("") String accountNumber) {
+    public String GetPromotions(@RequestParam(name = "countryIsos", required = false) String[] countryIsos,
+            @RequestParam(name = "providerCodes", required = false) String[] providerCodes,
+            @RequestParam(name = "accountNumber", required = false) String accountNumber) {
         String uri = "https://api.dingconnect.com/api/V1/GetPromotions";
         String param = "";
         param = getParamFromArray(param, "countryIsos=", countryIsos);
@@ -223,9 +231,10 @@ public class RestApiCallController {
     // * GetProviders
     // localhost:8084/GetPromotions?providerCodes&providerCodes&countryIsos&countryIsos&regionCodes&regionCodes&accountNumber
     @GetMapping(value = "/GetProviders")
-    public String GetProviders(@RequestParam String[] providerCodes, @RequestParam String[] countryIsos,
-            @RequestParam String[] regionCodes,
-            @RequestParam("") String accountNumber) {
+    public String GetProviders(@RequestParam(name = "providerCodes", required = false) String[] providerCodes,
+            @RequestParam(name = "countryIsos", required = false) String[] countryIsos,
+            @RequestParam(name = "regionCodes", required = false) String[] regionCodes,
+            @RequestParam(name = "accountNumber", required = false) String accountNumber) {
         String uri = "https://api.dingconnect.com/api/V1/GetProviders";
         String param = "";
         param = getParamFromArray(param, "providerCodes=", providerCodes);
@@ -238,7 +247,7 @@ public class RestApiCallController {
     // * GetProviderStatus
     // localhost:8084/GetProviderStatus?providerCodes&providerCodes
     @GetMapping(value = "/GetProviderStatus")
-    public String GetProviderStatus(@RequestParam String[] providerCodes) {
+    public String GetProviderStatus(@RequestParam(name = "providerCodes", required = false) String[] providerCodes) {
         String uri = "https://api.dingconnect.com/api/V1/GetProviderStatus";
         String param = "";
         param = getParamFromArray(param, "providerCodes=", providerCodes);
@@ -248,7 +257,7 @@ public class RestApiCallController {
     // * GetRegions
     // localhost:8084/GetRegions?countryIsos&countryIsos
     @GetMapping(value = "/GetRegions")
-    public String GetRegions(@RequestParam String[] countryIsos) {
+    public String GetRegions(@RequestParam(name = "countryIsos", required = false) String[] countryIsos) {
         String uri = "https://api.dingconnect.com/api/V1/GetRegions";
         String param = "";
         param = getParamFromArray(param, "countryIsos=", countryIsos);
