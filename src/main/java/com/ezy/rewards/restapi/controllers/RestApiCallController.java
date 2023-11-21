@@ -125,10 +125,9 @@ public class RestApiCallController {
 
     // * GetAccountLookup --
     // localhost:8084/GetAccountLookup?accountNumber
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetAccountLookup?accountNumber
     @GetMapping(value = "/GetAccountLookup")
     public String GetAccountLookup(@RequestParam(name = "accountNumber", required = false) String accountNumber) {
-        // public String GetAccountLookup(@RequestParam("") String accountNumber) {
-
         String uri = "https://api.dingconnect.com/api/V1/GetAccountLookup";
         String param = "";
         param = getSingleParamAddedInURI(param, "accountNumber=", accountNumber);
@@ -137,6 +136,7 @@ public class RestApiCallController {
 
     // * GetBalance No-Param - Tested
     // localhost:8084/GetBalance
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetBalance
     @GetMapping(value = "/GetBalance")
     public String GetBalance() {
         String uri = "https://api.dingconnect.com/api/V1/GetBalance";
@@ -146,6 +146,7 @@ public class RestApiCallController {
 
     // * GetCountries No-Param - Tested
     // localhost:8084/GetCountries
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetCountries
     @GetMapping(value = "/GetCountries")
     public String GetCountries() {
         String uri = "https://api.dingconnect.com/api/V1/GetCountries";
@@ -155,6 +156,7 @@ public class RestApiCallController {
 
     // * GetCurrencies No-Param - Tested
     // localhost:8084/GetCurrencies
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetCurrencies
     @GetMapping(value = "/GetCurrencies")
     public String GetCurrencies() {
         String uri = "https://api.dingconnect.com/api/V1/GetCurrencies";
@@ -164,6 +166,7 @@ public class RestApiCallController {
 
     // * GetErrorCodeDescriptions No-Param - Tested
     // localhost:8084/GetErrorCodeDescriptions
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetErrorCodeDescriptions
     @GetMapping(value = "/GetErrorCodeDescriptions")
     public String GetErrorCodeDescriptions() {
         String uri = "https://api.dingconnect.com/api/V1/GetErrorCodeDescriptions";
@@ -173,6 +176,7 @@ public class RestApiCallController {
 
     // * GetProductDescriptions - Tested Partially
     // localhost:8084/GetProductDescriptions?languageCodes&languageCodes&skuCodes&skuCodes
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetProductDescriptions?languageCodes&languageCodes&skuCodes&skuCodes
     @GetMapping(value = "/GetProductDescriptions")
     public String GetProductDescriptions(@RequestParam(name = "languageCodes", required = false) String[] languageCodes,
             @RequestParam(name = "skuCodes", required = false) String[] skuCodes) {
@@ -185,6 +189,7 @@ public class RestApiCallController {
 
     // * GetProducts
     // localhost:8084/GetProducts?countryIsos&countryIsos&providerCodes&providerCodes&skuCodes&skuCodes&benefits&benefits&regionCodes&regionCodes&accountNumber
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetProducts?countryIsos&countryIsos&providerCodes&providerCodes&skuCodes&skuCodes&benefits&benefits&regionCodes&regionCodes&accountNumber
     @GetMapping(value = "/GetProducts")
     public String GetProducts(@RequestParam(name = "countryIsos", required = false) String[] countryIsos,
             @RequestParam(name = "providerCodes", required = false) String[] providerCodes,
@@ -205,6 +210,7 @@ public class RestApiCallController {
 
     // * GetPromotionDescriptions
     // localhost:8084/GetPromotionDescriptions?languageCodes&languageCodes
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetPromotionDescriptions?languageCodes&languageCodes
     @GetMapping(value = "/GetPromotionDescriptions")
     public String GetPromotionDescriptions(
             @RequestParam(name = "languageCodes", required = false) String[] languageCodes) {
@@ -216,6 +222,7 @@ public class RestApiCallController {
 
     // * GetPromotions
     // localhost:8084/GetPromotions?countryIsos&countryIsos&providerCodes&providerCodes&accountNumber
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetPromotions?countryIsos&countryIsos&providerCodes&providerCodes&accountNumber
     @GetMapping(value = "/GetPromotions")
     public String GetPromotions(@RequestParam(name = "countryIsos", required = false) String[] countryIsos,
             @RequestParam(name = "providerCodes", required = false) String[] providerCodes,
@@ -230,6 +237,7 @@ public class RestApiCallController {
 
     // * GetProviders
     // localhost:8084/GetPromotions?providerCodes&providerCodes&countryIsos&countryIsos&regionCodes&regionCodes&accountNumber
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetPromotions?providerCodes&providerCodes&countryIsos&countryIsos&regionCodes&regionCodes&accountNumber
     @GetMapping(value = "/GetProviders")
     public String GetProviders(@RequestParam(name = "providerCodes", required = false) String[] providerCodes,
             @RequestParam(name = "countryIsos", required = false) String[] countryIsos,
@@ -246,6 +254,7 @@ public class RestApiCallController {
 
     // * GetProviderStatus
     // localhost:8084/GetProviderStatus?providerCodes&providerCodes
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetProviderStatus?providerCodes&providerCodes
     @GetMapping(value = "/GetProviderStatus")
     public String GetProviderStatus(@RequestParam(name = "providerCodes", required = false) String[] providerCodes) {
         String uri = "https://api.dingconnect.com/api/V1/GetProviderStatus";
@@ -256,6 +265,7 @@ public class RestApiCallController {
 
     // * GetRegions
     // localhost:8084/GetRegions?countryIsos&countryIsos
+    // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetRegions?countryIsos&countryIsos
     @GetMapping(value = "/GetRegions")
     public String GetRegions(@RequestParam(name = "countryIsos", required = false) String[] countryIsos) {
         String uri = "https://api.dingconnect.com/api/V1/GetRegions";

@@ -1,4 +1,7 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "appService.preDeployTask": "package:restapi",
+    "appService.deploySubpath": "target\\restapi-0.0.1-SNAPSHOT.jar",
+    "appService.defaultWebAppToDeploy": "/subscriptions/3025b9f4-8138-4ede-bad2-0b366cbdde01/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/ezy-rewards-spring-boot-rest-api"
 }
