@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Don't commit logs
+*.log
