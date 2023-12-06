@@ -1,5 +1,7 @@
 package com.ezy.rewards.restapi.service.model;
 
+import com.google.gson.annotations.Expose;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,49 +14,44 @@ public class Region {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer regionId;
 
+    @Expose
     private String RegionCode;
+    @Expose
     private String RegionName;
-    private String CountryIso;
+    @Expose
+    private String countryIso;
 
-
-    
-
-    public Region(String regionCode, String regionName, String countryIso) {
-        RegionCode = regionCode;
-        RegionName = regionName;
-        CountryIso = countryIso;
+    public Region(String RegionCode, String RegionName, String countryIso) {
+        this.RegionCode = RegionCode;
+        this.RegionName = RegionName;
+        this.countryIso = countryIso;
     }
 
-    public Integer getRegionId() {
-        return regionId;
-    }
-
-    public void setRegionId(Integer regionId) {
-        this.regionId = regionId;
+    public Region() {
     }
 
     public String getRegionCode() {
-        return RegionCode;
+        return this.RegionCode;
     }
 
-    public void setRegionCode(String regionCode) {
-        RegionCode = regionCode;
+    public void setRegionCode(String RegionCode) {
+        this.RegionCode = RegionCode;
     }
 
     public String getRegionName() {
-        return RegionName;
+        return this.RegionName;
     }
 
-    public void setRegionName(String regionName) {
-        RegionName = regionName;
+    public void setRegionName(String RegionName) {
+        this.RegionName = RegionName;
     }
 
     public String getCountryIso() {
-        return CountryIso;
+        return this.countryIso;
     }
 
     public void setCountryIso(String countryIso) {
-        CountryIso = countryIso;
+        this.countryIso = countryIso;
     }
 
 }

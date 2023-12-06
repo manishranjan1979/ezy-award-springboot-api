@@ -9,27 +9,37 @@ import jakarta.persistence.Id;
 
 @Entity
 public class DingResp {
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.AUTO)
+    // private Integer dingRespId;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer dingRespId;
-
+    private Integer apiId;
     private String apiName;
     private String fullResp;
     private String respItem;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Timestamp recordEntryTimestamp;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Timestamp recordUpdateTimestamp;
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     private boolean activationStatus;
 
-    public DingResp(String apiName, String fullResp, String respItem) {
+    public DingResp() {
+        System.out.println("Inside DingResp Default Controller..");
+        System.out.println("Leaving DingResp Default Controller..");
+    }
+
+    public DingResp(String apiName, String fullResp, String respItem, Timestamp recordEntryTimestamp,
+            Timestamp recordUpdateTimestamp, boolean activationStatus) {
         this.apiName = apiName;
         this.fullResp = fullResp;
         this.respItem = respItem;
+        this.recordEntryTimestamp = recordEntryTimestamp;
+        this.recordUpdateTimestamp = recordUpdateTimestamp;
+        this.activationStatus = activationStatus;
     }
 
     public String getApiName() {
@@ -56,12 +66,24 @@ public class DingResp {
         this.respItem = respItem;
     }
 
+    public void setRecordEntryTimestamp(Timestamp recordEntryTimestamp) {
+        this.recordEntryTimestamp = recordEntryTimestamp;
+    }
+
     public Timestamp getRecordEntryTimestamp() {
         return recordEntryTimestamp;
     }
 
+    public void setRecordUpdateTimestamp(Timestamp recordUpdateTimestamp) {
+        this.recordUpdateTimestamp = recordUpdateTimestamp;
+    }
+
     public Timestamp getRecordUpdateTimestamp() {
         return recordUpdateTimestamp;
+    }
+
+    public void isActivationStatus(boolean activationStatus) {
+        this.activationStatus = activationStatus;
     }
 
     public boolean isActivationStatus() {

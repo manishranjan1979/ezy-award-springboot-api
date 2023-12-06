@@ -64,14 +64,14 @@ public class RestApiCallController {
 
         }
 
-        String responseJson = responseData.getBody();
+        String responseJson = responseData != null ? responseData.getBody() : null;
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(responseJson);
         } catch (JSONException err) {
             LOG.debug("Could not create JSON Object");
         }
-        String strToken = jsonObject.getString("access_token");
+        String strToken = jsonObject != null ? jsonObject.getString("access_token") : null;
         return strToken;
     }
 
@@ -266,7 +266,7 @@ public class RestApiCallController {
     // * GetRegions
     // localhost:8084/GetRegions?countryIsos&countryIsos
     // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetRegions?countryIsos&countryIsos
-    @GetMapping(value = "/GetRegions")
+    @GetMapping(value = "/GetRegions_Old")
     public String GetRegions(@RequestParam(name = "countryIsos", required = false) String[] countryIsos) {
         String uri = "https://api.dingconnect.com/api/V1/GetRegions";
         String param = "";
