@@ -253,13 +253,11 @@ public class MainController {
             countryList.add(c1);
         }
         LOG.info("countryList----- : " + countryList);
-        System.out.println("countryList----- : " + countryList);
         LOG.info("Leaving fetchCountriesDataFromDB..");
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String countryListJson = countryList != null && countryList.size() > 0
                 ? gson.toJson(countryList)
                 : null;
-        System.out.println("countryListJson==" + countryListJson);
         return countryListJson;
     }
 
