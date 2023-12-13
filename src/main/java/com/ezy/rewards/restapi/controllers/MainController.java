@@ -210,11 +210,6 @@ public class MainController {
      */
     public String fetchRegionsDataFromDB(String[] countryIsos) {
         LOG.info("Inside fetchRegionsDataFromDB..");
-        // Iterable<DingResp> itr = dingRespRepository.find
-        // Iterable<DingResp> iterableDingResp = dingRespRepository
-        // .findByApiName("https://api.dingconnect.com/api/V1/GetRegions");
-        //
-        // String countryIsosStr = StringUtils.arrayToCommaDelimitedString(countryIsos);
         List<String> countryIsosList = countryIsos != null ? Arrays.asList(countryIsos) : null;
         Iterable<Region> iterableRegion = (countryIsosList != null && countryIsosList.size() > 0)
                 ? regionRepository.findByCountryIsoIn(countryIsosList)
@@ -227,12 +222,6 @@ public class MainController {
         LOG.info("regionList----- : " + regionList);
         LOG.info("Leaving fetchRegionsDataFromDB..");
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        // String regionListJson = regionList != null && regionList.size() > 0 ?
-        // gson.toJson(regionList) : null;
-        // List<RegionResponse> rr = new ArrayList<>();
-        // ErrorCodes errorCodes[] = { new ErrorCodes("", ""), new ErrorCodes("", "") };
-        // rr.add(new RegionResponse(1, errorCodes, regionList));
-        // String regionListJson = rr != null && rr.size() > 0 ? gson.toJson(rr) : null;
         String regionListJson = regionList != null && regionList.size() > 0 ? gson.toJson(regionList) : null;
         return regionListJson;
     }
