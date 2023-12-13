@@ -147,7 +147,7 @@ public class RestApiCallController {
     // * GetCountries No-Param - Tested
     // localhost:8084/GetCountries
     // https://ezy-rewards-spring-boot-rest-api.azurewebsites.net/GetCountries
-    @GetMapping(value = "/GetCountries")
+    @GetMapping(value = "/GetCountries_Old")
     public String GetCountries() {
         String uri = "https://api.dingconnect.com/api/V1/GetCountries";
         String param = "";
@@ -277,7 +277,9 @@ public class RestApiCallController {
     private String getParamFromArray(String param, String paramField, String[] paramArray) {
         if (paramArray != null && paramArray.length > 0) {
             if (paramArray.length == 1) {
-                param = paramField + paramArray[0];
+
+                param = param.equals("") ? param + paramField + paramArray[0]
+                        : param + "&" + paramField + paramArray[0];
             } else {
                 int i = 0;
                 do {

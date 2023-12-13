@@ -1,10 +1,12 @@
 package com.ezy.rewards.restapi.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import com.ezy.rewards.restapi.service.model.DingResp;
+import org.springframework.stereotype.Repository;
 
-public interface DingRespRepository extends CrudRepository<DingResp, Integer> {
-    public Iterable<DingResp> findByApiName(String apiName);
+import com.ezy.rewards.restapi.service.entity.DingAPI;
+@Repository
+public interface DingRespRepository extends CrudRepository<DingAPI, Integer> {
+    public Iterable<DingAPI> findByApiName(String apiName);
 
-    public Iterable<DingResp> deleteByApiName(String apiName);
+    public Iterable<DingAPI> deleteByApiName(String apiName);
 }

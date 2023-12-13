@@ -1,4 +1,4 @@
-package com.ezy.rewards.restapi.service.model;
+package com.ezy.rewards.restapi.service.entity.region;
 
 import com.google.gson.annotations.Expose;
 

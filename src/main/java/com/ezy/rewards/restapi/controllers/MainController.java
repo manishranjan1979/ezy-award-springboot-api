@@ -23,20 +23,23 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.ezy.rewards.restapi.repository.CountryRepository;
 import com.ezy.rewards.restapi.repository.DingRespRepository;
 import com.ezy.rewards.restapi.repository.RegionRepository;
-import com.ezy.rewards.restapi.service.model.DingResp;
-import com.ezy.rewards.restapi.service.model.Region;
+import com.ezy.rewards.restapi.service.entity.DingAPI;
+import com.ezy.rewards.restapi.service.entity.country.Country;
+import com.ezy.rewards.restapi.service.entity.country.InternationalDialingInformation;
+import com.ezy.rewards.restapi.service.entity.region.Region;
 import com.ezy.rewards.restapi.utils.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 @PropertySource("classpath:restapi.properties")
 @RestController
@@ -49,6 +52,10 @@ public class MainController {
 
     @Autowired
     private DingRespRepository dingRespRepository;
+
+    @Autowired
+    private CountryRepository countryRepository;
+
     @Value("${grant.type}")
     private String grantType;
 
@@ -82,7 +89,7 @@ public class MainController {
         JSONArray jsonResponseItemsArr = jsonRespoObj.getJSONArray("Items");
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        DingResp dingResp = new DingResp("https://api.dingconnect.com/api/V1/GetRegions", jsonResponse,
+        DingAPI dingResp = new DingAPI("https://api.dingconnect.com/api/V1/GetRegions", jsonResponse,
                 jsonResponseItemsArr.toString(), timestamp, timestamp, true);
         dingRespRepository.save(dingResp); // Saving response JSON for countries in DB
         LOG.info("Leaving saveRegionsResponseJSON..");
@@ -101,7 +108,7 @@ public class MainController {
         JSONArray jsonResponseItemsArr = jsonRespoObj.getJSONArray("Items");
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        DingResp dingResp = new DingResp("https://api.dingconnect.com/api/V1/GetCountries", jsonResponse,
+        DingAPI dingResp = new DingAPI("https://api.dingconnect.com/api/V1/GetCountries", jsonResponse,
                 jsonResponseItemsArr.toString(), timestamp, timestamp, true);
         dingRespRepository.save(dingResp); // Saving response JSON for countries in DB
         LOG.info("Leaving saveCountriesResponseJSON..");
@@ -120,7 +127,7 @@ public class MainController {
         JSONArray jsonResponseItemsArr = jsonRespoObj.getJSONArray("Items");
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        DingResp dingResp = new DingResp("https://api.dingconnect.com/api/V1/GetCurrencies", jsonResponse,
+        DingAPI dingResp = new DingAPI("https://api.dingconnect.com/api/V1/GetCurrencies", jsonResponse,
                 jsonResponseItemsArr.toString(), timestamp, timestamp, true);
         dingRespRepository.save(dingResp); // Saving response JSON for currencies in DB
         LOG.info("Leaving saveCurrenciesResponseJSON..");
@@ -138,10 +145,10 @@ public class MainController {
         // Iterable<DingResp> itr = dingRespRepository.find
         // Iterable<DingResp> iterableDingResp = dingRespRepository
         // .findByApiName("https://api.dingconnect.com/api/V1/GetRegions");
-        Iterable<DingResp> iterableDingResp = dingRespRepository
+        Iterable<DingAPI> iterableDingResp = dingRespRepository
                 .findByApiName(apiName);
-        Iterator<DingResp> iteratorDingResp = iterableDingResp.iterator();
-        DingResp dingRespVal = null;
+        Iterator<DingAPI> iteratorDingResp = iterableDingResp.iterator();
+        DingAPI dingRespVal = null;
         while (iteratorDingResp.hasNext()) {
             dingRespVal = iteratorDingResp.next();
             Date date = new Date();
@@ -207,7 +214,7 @@ public class MainController {
         // Iterable<DingResp> iterableDingResp = dingRespRepository
         // .findByApiName("https://api.dingconnect.com/api/V1/GetRegions");
         //
-        String countryIsosStr = StringUtils.arrayToCommaDelimitedString(countryIsos);
+        // String countryIsosStr = StringUtils.arrayToCommaDelimitedString(countryIsos);
         List<String> countryIsosList = countryIsos != null ? Arrays.asList(countryIsos) : null;
         Iterable<Region> iterableRegion = (countryIsosList != null && countryIsosList.size() > 0)
                 ? regionRepository.findByCountryIsoIn(countryIsosList)
@@ -217,10 +224,80 @@ public class MainController {
         if (iteratorRegion != null) {
             iteratorRegion.forEachRemaining(regionList::add);
         }
+        LOG.info("regionList----- : " + regionList);
         LOG.info("Leaving fetchRegionsDataFromDB..");
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        // String regionListJson = regionList != null && regionList.size() > 0 ?
+        // gson.toJson(regionList) : null;
+        // List<RegionResponse> rr = new ArrayList<>();
+        // ErrorCodes errorCodes[] = { new ErrorCodes("", ""), new ErrorCodes("", "") };
+        // rr.add(new RegionResponse(1, errorCodes, regionList));
+        // String regionListJson = rr != null && rr.size() > 0 ? gson.toJson(rr) : null;
         String regionListJson = regionList != null && regionList.size() > 0 ? gson.toJson(regionList) : null;
         return regionListJson;
+    }
+
+    /**
+     * This method fetches the data from Country table
+     * 
+     * @return
+     */
+    public String fetchCountriesDataFromDB() {
+        LOG.info("Inside fetchCountriesDataFromDB..");
+
+        Iterable<Country> iterableCountry = countryRepository.findAll();
+        Iterator<Country> iteratorCountry = iterableCountry != null ? iterableCountry.iterator() : null;
+        List<Country> countryList = new ArrayList<>();
+        while (iteratorCountry != null && iteratorCountry.hasNext()) {
+            Country c1 = (Country) iteratorCountry.next();
+            countryList.add(c1);
+        }
+        LOG.info("countryList----- : " + countryList);
+        System.out.println("countryList----- : " + countryList);
+        LOG.info("Leaving fetchCountriesDataFromDB..");
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String countryListJson = countryList != null && countryList.size() > 0
+                ? gson.toJson(countryList)
+                : null;
+        System.out.println("countryListJson==" + countryListJson);
+        return countryListJson;
+    }
+
+    /**
+     * GetCountries
+     * 
+     * @param countryIsos
+     * @return
+     */
+    @GetMapping(value = "/GetCountries")
+    public String GetCountries() {
+        LOG.info("Inside GetCountries..");
+        String uri = "https://api.dingconnect.com/api/V1/GetCountries";
+        boolean responseIsMoreThan3HrsOld = checkResponseIsMoreThan3HrsOld(uri);
+        String jsonResponse = null;
+
+        if (responseIsMoreThan3HrsOld) {
+            LOG.info(
+                    "Firstly fetch the data from the API. Save the data in table. Further fetch the data from table as the current data is less than 3 hrs old. ");
+            String param = "";
+            Utils utils = new Utils();
+            String token = getTokenNew();
+            jsonResponse = utils.getAPIData(utils.getFinalURIWithParam(uri, param), token);
+            countryRepository.deleteAll();// delete all countries before saving the new record
+            Iterable<DingAPI> dingAPIIterable = dingRespRepository.findByApiName(uri);
+            Iterator<DingAPI> dingAPIIterator = dingAPIIterable != null ? dingAPIIterable.iterator() : null;
+            List<DingAPI> dingAPIList = new ArrayList<>();
+            if (dingAPIIterator != null) {
+                dingAPIIterator.forEachRemaining(dingAPIList::add);
+            }
+            dingRespRepository.deleteAll(dingAPIList);
+            saveCountryData(jsonResponse);
+            LOG.info("Leaving GetCountries..");
+        } else {
+            LOG.info("Fetch the data from table as the current data is less than 3 hrs old. Don't hit the API.");
+        }
+        jsonResponse = fetchCountriesDataFromDB();
+        return jsonResponse;
     }
 
     // * GetRegions
@@ -243,10 +320,10 @@ public class MainController {
             // param = utils.getParamFromArray(param, "countryIsos=", countryIsos);
             String token = getTokenNew();
             jsonResponse = utils.getAPIData(utils.getFinalURIWithParam(uri, param), token);
-            regionRepository.deleteAll();// delete all before saving the new record
-            Iterable<DingResp> dingRespIterable = dingRespRepository.findByApiName(uri);
-            Iterator<DingResp> dingRespIterator = dingRespIterable != null ? dingRespIterable.iterator() : null;
-            List<DingResp> dingRespList = new ArrayList<>();
+            regionRepository.deleteAll();// delete all regions before saving the new record
+            Iterable<DingAPI> dingRespIterable = dingRespRepository.findByApiName(uri);
+            Iterator<DingAPI> dingRespIterator = dingRespIterable != null ? dingRespIterable.iterator() : null;
+            List<DingAPI> dingRespList = new ArrayList<>();
             if (dingRespIterator != null) {
                 dingRespIterator.forEachRemaining(dingRespList::add);
             }
@@ -287,10 +364,51 @@ public class MainController {
 
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        DingResp dingResp = new DingResp("https://api.dingconnect.com/api/V1/GetRegions", jsonResponse,
+        DingAPI dingResp = new DingAPI("https://api.dingconnect.com/api/V1/GetRegions", jsonResponse,
                 jsonResponseItemsArr.toString(), timestamp, timestamp, true);
         dingRespRepository.save(dingResp); // Saving response JSON for regions in DB
         LOG.info("Leaving saveRegionsData..");
+    }
+
+    public void saveCountryData(String jsonResponse) {
+        LOG.info("Inside saveCountryData..");
+        List<Country> countryEntities = new ArrayList<>();
+        JSONObject jsonRespoObj = new JSONObject(jsonResponse);
+        JSONArray jsonResponseItemsArr = jsonRespoObj.getJSONArray("Items");
+
+        for (int it = 0; it < jsonResponseItemsArr.length(); it++) {
+            Country country = new Country();
+            JSONObject countryItem = jsonResponseItemsArr.getJSONObject(it);
+            List<InternationalDialingInformation> intDialInfoList = new ArrayList<>();
+            JSONArray countryItemItemsArr = countryItem.getJSONArray("InternationalDialingInformation");
+            for (int it1 = 0; it1 < countryItemItemsArr.length(); it1++) {
+                JSONObject obj1 = countryItemItemsArr.getJSONObject(it1);
+                InternationalDialingInformation internationalDialingInformation = new InternationalDialingInformation(
+                        obj1.getString("Prefix"),
+                        obj1.getInt("MinimumLength"), obj1.getInt("MaximumLength"), country);
+                intDialInfoList.add(internationalDialingInformation);
+            }
+            List<String> regionCodesList = new ArrayList<>();
+            JSONArray regionCodesArr = countryItem.getJSONArray("RegionCodes");
+            for (int it2 = 0; it2 < regionCodesArr.length(); it2++) {
+                String regionCode = regionCodesArr.getString(it2);
+                regionCodesList.add(regionCode);
+            }
+
+            country.setCountryIso(countryItem.getString("CountryIso"));
+            country.setCountryName(countryItem.getString("CountryName"));
+            country.setInternationalDialingInformation(intDialInfoList);
+            country.setRegionCodes(regionCodesList);
+            countryEntities.add(country);
+        }
+        countryRepository.saveAll(countryEntities);
+
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        DingAPI dingResp = new DingAPI("https://api.dingconnect.com/api/V1/GetCountries", jsonResponse,
+                jsonResponseItemsArr.toString(), timestamp, timestamp, true);
+        dingRespRepository.save(dingResp); // Saving response JSON for regions in DB
+        LOG.info("Leaving saveCountryData..");
     }
 
     @GetMapping(value = "/getTokenNew")

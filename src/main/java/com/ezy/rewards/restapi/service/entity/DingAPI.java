@@ -1,4 +1,4 @@
-package com.ezy.rewards.restapi.service.model;
+package com.ezy.rewards.restapi.service.entity;
 
 import java.sql.Timestamp;
 
@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class DingResp {
+public class DingAPI {
     // @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
     // private Integer dingRespId;
@@ -27,12 +27,12 @@ public class DingResp {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private boolean activationStatus;
 
-    public DingResp() {
+    public DingAPI() {
         System.out.println("Inside DingResp Default Controller..");
         System.out.println("Leaving DingResp Default Controller..");
     }
 
-    public DingResp(String apiName, String fullResp, String respItem, Timestamp recordEntryTimestamp,
+    public DingAPI(String apiName, String fullResp, String respItem, Timestamp recordEntryTimestamp,
             Timestamp recordUpdateTimestamp, boolean activationStatus) {
         this.apiName = apiName;
         this.fullResp = fullResp;
